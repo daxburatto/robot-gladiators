@@ -1,13 +1,13 @@
 //Functions
 var playerName = window.prompt("What is your robot's name?")
 var playerHealth = 100
-var playerAttack = 25
+var playerAttack = 15
 var playerMoney = 10
 console.log(playerName, playerHealth, playerAttack, playerMoney)
 
 var enemyNames = ['Roberto', 'Amy Android', 'Robo Trumble']
 var enemyHealth = 50
-var enemyAttack = 12
+var enemyAttack = 50
 
 var fight = function(enemyName) {
 //repeat and execute as long as enemy-robot is alive
@@ -53,6 +53,7 @@ var fight = function(enemyName) {
         enemyName + " attacked " + playerName + ". " + playerName + " now has " + playerHealth + " health remaining."
         )
     //check players health
+    //If players health is 0
         if (playerHealth <= 0) {
             window.alert(playerName + " has died!")
             break 
@@ -63,12 +64,20 @@ var fight = function(enemyName) {
         }
     }
 }
-
   //calls 
 
 //var fight
 for (let i = 0; i < enemyNames.length; i++) {
+    //If the player has health
+    if (playerHealth > 0) {
+        //alert player of round number
+        window.alert('Welcome to Robot Gladiators! Round ' + (i + 1))
     var pickedEnemyName = enemyNames[i]
     enemyHealth = 50
     fight(pickedEnemyName)
+    } else {
+        window.alert('You have lost your robot in battle! Game Over!')
+        break
+        }
+    
 }
