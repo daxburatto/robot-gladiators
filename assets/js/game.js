@@ -1,13 +1,72 @@
 //Functions
 var playerName = window.prompt("What is your robot's name?")
 var playerHealth = 100
-var playerAttack = 50
+var playerAttack = 10
 var playerMoney = 10
 console.log(playerName, playerHealth, playerAttack, playerMoney)
 
 var enemyNames = ['Roberto', 'Amy Android', 'Robo Trumble']
 var enemyHealth = 50
-var enemyAttack = 25
+var enemyAttack = 12
+
+var randomNumber = function(min,max) {
+    var value = Math.floor(Math.random() * (max - min + 1) + min)
+
+    return value
+}
+
+var startGame = function() {
+    //reset player stats
+    playerHealth = 100
+    playerAttack = 10
+    playerMoney = 10
+    //reset enemy stats
+    
+
+    for (let i = 0; i < enemyNames.length; i++) {
+        //If the player has health
+        if (playerHealth > 0) {
+            //alert player of round number
+            window.alert('Welcome to Robot Gladiators! Round ' + (i + 1))
+        var pickedEnemyName = enemyNames[i]
+        enemyHealth = randomNumber(40, 60)
+        fight(pickedEnemyName)
+        } else {
+            break
+        }
+        //if not at last enemy in array
+        if (playerHealth > 0 && i < enemyNames.length - 1) {
+            //ask player if they want to go to shop
+            var storeConfirm = window.confirm('The fight is over, visit the store before the next round?')
+            //if yes, take them to the store() function
+            if (storeConfirm) {
+                shop()
+            }
+        }
+    }
+
+    endGame()
+}
+
+//function to end the entire game
+var endGame = function() {
+    window.alert("The game has now ended. Let's see how you did!")
+    //if player is still alive, player wins!
+    if (playerHealth > 0) {
+        window.alert("Great job, you've survived the game! You now have a score of " + playerMoney + ".")
+    } else {
+    //if player is not alive, they lose!
+        window.alert("You've lost your robot in battle.")
+    }
+    //ask to play again
+    var playAgainConfirm = window.confirm("Would you like to play again?")
+    if (playAgainConfirm) {
+        startGame()
+        console.log("the game has restarted!")
+    } else {
+        window.alert("Thank you for playing Robot Gladiators! Come back soon!")
+    }
+}
 
 var shop = function() {
     var shopOptionPrompt = window.prompt('Would you like to REFILL your health, UPGRADE your attack, or LEAVE the store? Enter REFILL, UPGRADE, or LEAVE!')
@@ -67,7 +126,11 @@ var fight = function(enemyName) {
     //If player types FIGHT
         if (promptFight === "fight" || promptFight === "FIGHT") {
             //Subtract the value of `playerAttack` from the value of `enemyHealth` and use that result to update the value in the `enemyHealth` variable
-            enemyHealth = enemyHealth - playerAttack
+            var damage = randomNumber(playerAttack - 3, playerAttack)
+            enemyHealth = Math.max(0, enemyHealth - damage)
+            if (enemyHealth < 0) {
+                enemyHealth = 0
+            }
             // Log a resulting message to the console so we know that it worked.
             console.log(
             playerName + " attacked " + enemyName + ". " + enemyName + " now has " + enemyHealth + " health remaining."
@@ -76,7 +139,10 @@ var fight = function(enemyName) {
         if (enemyHealth <= 0) {
             window.alert(enemyName + " has died!")
             //award player money for winning
-            playerMoney = playerMoney + 20
+            playerMoney = Math.max(0, playerMoney + 10)
+            if (playerMoney < 0) {
+                playerMoney = 0
+            }
             console.log('playerMoney', playerMoney)
             //leave while() loop because enemy has died
             break
@@ -84,7 +150,11 @@ var fight = function(enemyName) {
             window.alert(enemyName + " still has " + enemyHealth + " health left.")
         }
         // Subtract the value of `enemyAttack` from the value of `playerHealth` and use that result to update the value in the `playerHealth` variable.
-        playerHealth = playerHealth - enemyAttack
+        var damage = randomNumber(enemyAttack - 3, enemyAttack)
+        playerHealth = Math.max(0, playerHealth - damage)
+        if (playerHealth < 0) {
+            playerHealth = 0
+        }
         // Log a resulting message to the console so we know that it worked.
         console.log(
         enemyName + " attacked " + playerName + ". " + playerName + " now has " + playerHealth + " health remaining."
@@ -103,54 +173,5 @@ var fight = function(enemyName) {
 }
   //calls 
 
-//function to start a new game
-var startGame = function() {
-    for (let i = 0; i < enemyNames.length; i++) {
-        //If the player has health
-        if (playerHealth > 0) {
-            //alert player of round number
-            window.alert('Welcome to Robot Gladiators! Round ' + (i + 1))
-        var pickedEnemyName = enemyNames[i]
-        enemyHealth = 50
-        fight(pickedEnemyName)
-        //if not at last enemy in array
-        if (playerHealth > 0 && i < enemyNames.length - 1) {
-            //ask player if they want to go to shop
-            var storeConfirm = window.confirm('The fight is over, visit the store before the next round?')
-            //if yes, take them to the store() function
-            if (storeConfirm) {
-                shop()
-            }
-        }
-        } else {
-            window.alert('You have lost your robot in battle! Game Over!')
-            break
-        }
-    }
-    //play again
-    var startGame = function() {
-        //reset player stats
-        playerHealth = 100
-        playerAttack = 10
-        playerMoney = 10
-    }
-    var endGame = function() {
-        //if player is still alive, player wins!
-        if (playerHealth > 0) {
-            window.alert("Great job, you've survived the game! You now have a score of " + playerMoney + ".")
-        } else {
-        //if player is not alive, they lose!
-            window.alert("You've lost your robot in battle.")
-        }
-        //ask to play again
-        var playAgainConfirm = window.confirm("Would you like to play again?")
-        if (playAgainConfirm) {
-            startGame()
-            console.log("the game has restarted!")
-        } else {
-            window.alert("Thank you for playing Robot Gladiators! Come back soon!")
-        }
-    }
-    endGame()
-}
+//start new game
 startGame()
